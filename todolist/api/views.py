@@ -1,9 +1,14 @@
 from rest_framework import generics
+from rest_framework.pagination import CursorPagination
 from .permissions import IsOwnerOnly
 from .serializers import TodoSerializer
 from todo.models import Todo
 
+class TodoCursorPagination(CursorPagination):
+    ordering = 'id'
+    page_size = 2
 class TodoList(generics.ListCreateAPIView):
+    pagination_class = TodoCursorPagination
     permission_classes = (IsOwnerOnly,)
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
